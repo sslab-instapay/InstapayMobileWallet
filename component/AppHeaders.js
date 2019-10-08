@@ -17,9 +17,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold"
     },
     appHeader: {
-        marginTop: 30,
-        alignSelf: 'stretch',
+        marginTop: 10,
         height: 50,
-        alignItems: 'center'
     }
 });

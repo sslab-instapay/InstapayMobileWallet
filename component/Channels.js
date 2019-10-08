@@ -1,5 +1,5 @@
 import React from 'react';
-import {SectionList, StyleSheet, Text, View, Button} from "react-native";
+import {SectionList, StyleSheet, Text, View, Button, TouchableOpacity} from "react-native";
 
 export default class Channel extends React.Component {
 
@@ -10,7 +10,17 @@ export default class Channel extends React.Component {
     render() {
         return (
             <View>
-                <Text style={styles.channelLabel}>Channels</Text>
+                <View style={styles.channelHeader}>
+                    <Text style={styles.channelLabel}>Channels</Text>
+                    <View style={styles.channelButtonHeader}>
+                        <TouchableOpacity style={styles.openCloseButton}>
+                            <Text style={{ fontSize: 13, color: "#007bff" }}>Open</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.openCloseButton}>
+                            <Text style={{ fontSize: 13, color: "#007bff", marginRight: 7}}>Close</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
                 <SectionList
                     ListHeaderComponent={this.renderHeader}
                     style={styles.channelList}
@@ -86,6 +96,19 @@ const styles = StyleSheet.create({
     },
     rightItem: {
         marginRight: 10
+    },
+    channelHeader:{
+        flexDirection: "row",
+        justifyContent: "space-between"
+    },
+    channelButtonHeader:{
+        flexDirection: "row",
+        height: 20
+    },
+    openCloseButton:{
+        margin: 2,
+        color: "#007bff"
     }
+
 
 });

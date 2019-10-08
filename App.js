@@ -1,14 +1,13 @@
 import React from 'react';
-import {StyleSheet, Text, View, Button} from 'react-native';
+import {StyleSheet, Text, View, Button, Image} from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import Wallet from "./component/Wallets";
 import Channel from "./component/Channels"
 import AppHeaders from "./component/AppHeaders";
 import {createStackNavigator} from "react-navigation-stack";
-import QRCode from 'react-native-qrcode';
-import * as Permissions from 'expo-permissions';
-import {BarCodeScanner} from 'expo-barcode-scanner';
-import Invoice from './util/invoice'
+import ReceiveModal from "./component/ReceiveModal";
+import CameraModal from "./component/CameraModal";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const inChannelList = [];
 const outChannelList = [];
@@ -17,6 +16,23 @@ class HomeScreen extends React.Component{
     static navigationOptions = ({ navigation }) => {
         const params = navigation.state.params || {};
         return {
+            headerLeft:
+            <Icon.Button
+                name="qrcode"
+                size={20}
+                onPress={() => navigation.navigate('ReceiveModal', {
+                    otherParam: 'Put QRCode',
+                    address: params.address,
+                })}
+            />,
+            headerTitle: <Text style={styles.mainLabel}>InstaPay Wallet</Text>,
+            headerRight: <Icon.Button
+                name="camera"
+                size={20}
+                onPress={() => navigation.navigate('CameraModal', {
+                    otherParam: 'Put QRCode',
+                })}
+            />
         };
     };
 
@@ -45,13 +61,13 @@ class HomeScreen extends React.Component{
     render() {
         return (
             <View style={styles.container}>
-                <AppHeaders/>
                 <Wallet address={this.state.address} balance={this.state.balance}/>
                 <Channel inChannelList={this.state.inChannelList} outChannelList={this.state.outChannelList}/>
                 <Button
                     title="Receive"
-                    onPress={() => this.props.navigation.navigate('CameraModal', {
+                    onPress={() => this.props.navigation.navigate('ReceiveModal', {
                         otherParam: 'Put QRCode',
+                        address: this.state.address,
                     })}
                 />
 
@@ -71,7 +87,7 @@ class HomeScreen extends React.Component{
     }
 
     getWalletInformation = () => {
-        const url = "http://localhost:3001" + '/wallets';
+        const url = "http://141.223.121.139:3001" + '/wallets';
 
         fetch(url)
             .then(res1 => res1.json())
@@ -85,93 +101,12 @@ class HomeScreen extends React.Component{
                         outChannelList: tempOutChannelList.concat(...data.outChannelList),
                     }
                 );
+                this.props.navigation.setParams({ address: data.account.address });
             })
             .catch(
                 (err) => console.log(err)
             );
     }
-}
-
-class ReceiveModal extends React.Component{
-    constructor(props){
-        super(props);
-    }
-
-    render() {
-        return(
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-               <Text>{this.props.address}</Text>
-               <QRCode
-                    value={this.props.address}
-                    size={400}
-                    bgColor='purple'
-                    fgColor='white'/>
-            </View>
-        )
-    }
-
-
-}
-
-class CameraModal extends React.Component{
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            hasCameraPermission: null,
-            scanned: false,
-        };
-    }
-
-    static navigationOptions = ({ navigation, navigationOptions }) => {
-        const { params } = navigation.state;
-
-        return {
-            title: params ? params.otherParam : 'QRCODE',
-        };
-    };
-    async componentDidMount() {
-        this.getPermissionsAsync();
-    }
-
-    render() {
-        const { params } = this.props.navigation.state;
-        const itemId = params ? params.itemId : null;
-        const otherParam = params ? params.otherParam : null;
-
-        const { hasCameraPermission, scanned } = this.state;
-        if (hasCameraPermission === null) {
-            return <Text>Requesting for camera permission</Text>;
-        }
-        if (hasCameraPermission === false) {
-            return <Text>No access to camera</Text>;
-        }
-
-        return (
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <BarCodeScanner
-                    onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned}
-                    style={StyleSheet.absoluteFillObject}
-                />
-                {scanned && (
-                    <Button title={'Tap to Scan Again'} onPress={() => this.setState({ scanned: false })} />
-                )}
-            </View>
-        )
-    }
-
-    handleBarCodeScanned = ({ type, data }) => {
-        this.setState({ scanned: true });
-        if (data.startsWith("INSTA")){
-            const decodedInvoice = Invoice.decodeInvoice(data);
-        }
-        alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-    };
-
-    getPermissionsAsync = async () => {
-        const {status} = await Permissions.askAsync(Permissions.CAMERA);
-        this.setState({hasCameraPermission: status === 'granted'});
-    };
 }
 
 const MainStack = createStackNavigator(
@@ -182,6 +117,9 @@ const MainStack = createStackNavigator(
         CameraModal: {
             screen: CameraModal,
         },
+        ReceiveModal: {
+            screen: ReceiveModal,
+        }
     }
 );
 
@@ -198,5 +136,20 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         justifyContent: 'center',
         flexDirection: 'column'
-    }
+    },
+
+    qrcodeLabel:{
+        color: '#000088',
+        fontSize: 18,
+    },
+    qrcode:{
+        marginTop: 15,
+    },
+    mainLabel: {
+        color: 'steelblue',
+        fontSize: 20,
+        fontStyle: 'italic',
+        fontWeight: "bold"
+    },
+
 });
