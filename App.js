@@ -3,7 +3,7 @@ import {StyleSheet, Text, View, Button, Image} from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import Wallet from "./component/Wallets";
 import Channel from "./component/Channels"
-import AppHeaders from "./component/AppHeaders";
+import SendModal from "./component/SendModal";
 import {createStackNavigator} from "react-navigation-stack";
 import ReceiveModal from "./component/ReceiveModal";
 import CameraModal from "./component/CameraModal";
@@ -63,20 +63,6 @@ class HomeScreen extends React.Component{
             <View style={styles.container}>
                 <Wallet address={this.state.address} balance={this.state.balance}/>
                 <Channel inChannelList={this.state.inChannelList} outChannelList={this.state.outChannelList}/>
-                <Button
-                    title="Receive"
-                    onPress={() => this.props.navigation.navigate('ReceiveModal', {
-                        otherParam: 'Put QRCode',
-                        address: this.state.address,
-                    })}
-                />
-
-                <Button
-                    title="SCAN"
-                    onPress={() => this.props.navigation.navigate('CameraModal', {
-                        otherParam: 'Put QRCode',
-                    })}
-                />
             </View>
         );
     }
@@ -119,6 +105,9 @@ const MainStack = createStackNavigator(
         },
         ReceiveModal: {
             screen: ReceiveModal,
+        },
+        SendModal: {
+            screen: SendModal,
         }
     }
 );

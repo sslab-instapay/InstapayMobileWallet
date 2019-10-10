@@ -56,6 +56,16 @@ class CameraModal extends React.Component{
         this.setState({ scanned: true });
         if (data.startsWith("INSTA")){
             const decodedInvoice = Invoice.decodeInvoice(data);
+            this.props.navigation.pop();
+            this.props.navigation.navigate('SendModal', {
+                address: decodedInvoice['publicKey'],
+                amount: decodedInvoice['amount']
+            })
+        }else{
+            this.props.navigation.pop();
+            this.props.navigation.navigate('SendModal', {
+                address: data
+            })
         }
         alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     };
@@ -66,20 +76,8 @@ class CameraModal extends React.Component{
     };
 }
 
-class SendModal extends React.Component{
-    constructor(props){
-        super(props);
-    }
-
-    static navigationOptions = ({ navigation, navigationOptions }) => {
-        const { params } = navigation.state;
-        return {
-            title: 'Send',
-        };
-    };
-}
-
 const styles = StyleSheet.create({
+
 });
 
 export default CameraModal;
