@@ -3,7 +3,7 @@ import {StyleSheet, Text, View} from "react-native";
 
 export default function Wallet(props) {
     return (
-        <View>
+        <View style={{marginTop: 20}}>
             <Text style={styles.walletLabel}>Wallets</Text>
             <View style={styles.walletItem}>
                 <View style={styles.walletInformationRow}>
