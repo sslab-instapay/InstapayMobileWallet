@@ -8,6 +8,8 @@ import {createStackNavigator} from "react-navigation-stack";
 import ReceiveModal from "./component/ReceiveModal";
 import CameraModal from "./component/CameraModal";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import OpenChannelModal from "./component/OpenChannelModal";
+import CloseChannelModal from "./component/CloseChannelModal";
 
 const inChannelList = [];
 const outChannelList = [];
@@ -62,7 +64,7 @@ class HomeScreen extends React.Component{
         return (
             <View style={styles.container}>
                 <Wallet address={this.state.address} balance={this.state.balance}/>
-                <Channel inChannelList={this.state.inChannelList} outChannelList={this.state.outChannelList}/>
+                <Channel navigation={this.props.navigation} inChannelList={this.state.inChannelList} outChannelList={this.state.outChannelList}/>
             </View>
         );
     }
@@ -108,6 +110,12 @@ const MainStack = createStackNavigator(
         },
         SendModal: {
             screen: SendModal,
+        },
+        OpenChannelModal: {
+            screen: OpenChannelModal
+        },
+        CloseChannelModal:{
+            screen: CloseChannelModal
         }
     }
 );

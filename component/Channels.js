@@ -13,10 +13,14 @@ export default class Channel extends React.Component {
                 <View style={styles.channelHeader}>
                     <Text style={styles.channelLabel}>Channels</Text>
                     <View style={styles.channelButtonHeader}>
-                        <TouchableOpacity style={styles.openCloseButton}>
+                        <TouchableOpacity style={styles.openCloseButton} onPress={() => this.props.navigation.navigate('OpenChannelModal', {
+                            otherParam: '',
+                        })}>
                             <Text style={{ fontSize: 13, color: "#007bff" }}>Open</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.openCloseButton}>
+                        <TouchableOpacity style={styles.openCloseButton} onPress={() => this.props.navigation.navigate('CloseChannelModal', {
+                            otherParam: '',
+                        })}>
                             <Text style={{ fontSize: 13, color: "#007bff", marginRight: 7}}>Close</Text>
                         </TouchableOpacity>
                     </View>
