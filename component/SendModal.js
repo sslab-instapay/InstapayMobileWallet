@@ -24,7 +24,7 @@ class SendModal extends React.Component {
                            })} value={address}/>
                 <TextInput style={styles.depositInput} keyboardType={'numeric'} placeholder="ETH"
                            onChangeText={text => this.setState({
-                               deposit: text
+                               amount: text
                            })}/>
                 <Button onPress={this.sendAmount} title="Send"/>
             </View>
@@ -32,18 +32,22 @@ class SendModal extends React.Component {
     }
 
     sendAmount = () => {
-        const url = "http://141.223.121.139:3001" + '/channel/payments';
-        // TODO post react요청으로 바꿈
-        fetch(url)
-            .then(res1 => res1.json())
-            .then(data => {
-                alert("Payments Success");
-                this.props.navigation.replace('Home');
-            })
-            .catch(err => {
-                alert("Payments fail");
-                this.props.navigation.replace('Home');
-            });
+        let formData = new FormData();
+        formData.append('amount', this.state.address);
+        formData.append('addr', this.state.amount);
+        fetch(process.env.REACT_APP_INSTA_NODE_ADDRESS + "/channels/requests/server", {
+            method: 'POST',
+            body: formData
+        }).then(function (response) {
+            if (!response.ok) {
+                throw Error(response.statusText);
+            } else {
+                return response.json();
+            }
+        }).then((data) => {
+            alert('payment success to ' + this.state.address + ' amount : ' + this.state.amount);
+            this.props.navigation.replace('Home');
+        }).catch(err => console.log(err));
     }
 }
 

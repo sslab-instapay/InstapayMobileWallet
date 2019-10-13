@@ -8,7 +8,7 @@ import {createStackNavigator} from "react-navigation-stack";
 import ReceiveModal from "./component/ReceiveModal";
 import CameraModal from "./component/CameraModal";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import OpenChannelModal from "./component/OpenChannelModal";
+import OpenChannelModal, {OpenChannelCameraModal} from "./component/OpenChannelModal";
 import CloseChannelModal from "./component/CloseChannelModal";
 
 const inChannelList = [];
@@ -41,10 +41,6 @@ class HomeScreen extends React.Component{
     componentWillMount() {
         this.props.navigation.setParams({ increaseCount: this._increaseCount });
     }
-
-    state = {
-        count: 0,
-    };
 
     _increaseCount = () => {
         this.setState({ count: this.state.count + 1 });
@@ -116,6 +112,9 @@ const MainStack = createStackNavigator(
         },
         CloseChannelModal:{
             screen: CloseChannelModal
+        },
+        OpenChannelCameraModal: {
+            screen: OpenChannelCameraModal
         }
     }
 );
