@@ -20,16 +20,40 @@ class CloseChannelModal extends React.Component {
     render() {
         const {params} = this.props.navigation.state;
         const address = params ? params.address : null;
-        return (
-            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        const channelList = params ? params.channelList : null;
 
-                <Button title="Close Channel" onPress={this.handleCloseChannel}/>
+        const channelItemList = this.makeChannelItem(channelList);
+
+        return (
+            <View>
+                <View style={{height: 300, justifyContent: "center", alignItems: "center"}}>
+                    <Picker
+                        selectedValue={this.state.language}
+                        style={{height: 50, width: 300}}
+                        onValueChange={(itemValue, itemIndex) =>
+                            this.setState({language: itemValue})
+                        }>
+                        {Object.keys(channelItemList).map((key) => {
+                            return (<Picker.Item label={channelItemList[key]} value={key} key={key}/>)
+                        })}
+                    </Picker>
+                </View>
+
+                <Button style={styles.closeChannelButton} title="Close Channel" onPress={this.handleCloseChannel}/>
             </View>
         )
     }
 
+    makeChannelItem(channelList){
+        var channelItemList = {};
+        channelList.forEach(function (item, index) {
+            channelList[item.channelId] = 'Channel ' + item.channelId + ' ' + item.otherAddress + ' ' + item.myBalance;
+        });
+        return channelItemList;
+    }
+
     handleCloseChannel = () => {
-        const url = "http://141.223.121.139:3001" + '/requests/channel/close';
+        const url = "http://141.223.121.139:3001" + '/channels/requests/close';
 
         fetch(url)
             .then(res1 => res1.json())
@@ -68,6 +92,9 @@ const styles = StyleSheet.create({
     },
     qrcode: {
         marginTop: 15,
+    },
+    closeChannelButton:{
+        marginTop: 40
     }
 });
 

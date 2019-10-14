@@ -6,10 +6,23 @@ export default function Wallet(props) {
         <View style={{marginTop: 20}}>
             <Text style={styles.walletLabel}>Wallets</Text>
             <View style={styles.walletItem}>
+                <Text style={styles.onchainLabel}>On-chain</Text>
                 <View style={styles.walletInformationRow}>
                     <Text style={styles.nicknameLabel}>{convertAddress(props.address)}</Text>
                     <View style={styles.balanceItem}>
                         <Text>{props.balance}</Text>
+                        <Text style={styles.coinLabel}>ETH</Text>
+                    </View>
+                </View>
+                <Text style={styles.offchainLabel}>Off-chain</Text>
+                <View style={styles.walletInformationRow}>
+                    <Text style={styles.nicknameLabel}>{convertAddress(props.address)}</Text>
+                    <View style={styles.balanceItem}>
+                        <Text>{props.offchainDeposit}</Text>
+                        <Text style={styles.coinLabel}>ETH</Text>
+                    </View>
+                    <View style={styles.balanceItem}>
+                        <Text>{props.offchainBalance}</Text>
                         <Text style={styles.coinLabel}>ETH</Text>
                     </View>
                 </View>
@@ -30,7 +43,7 @@ const styles = StyleSheet.create({
             borderRadius: 7,
             borderColor: 'black',
             borderWidth: 0.5,
-            height: 50,
+            height: 120,
             margin: 10,
             flexDirection: "column"
         },
@@ -49,6 +62,18 @@ const styles = StyleSheet.create({
         },
         coinLabel: {
             color: "#b4b4b4",
+        },
+        onchainLabel:{
+            color: "#007bff",
+            marginTop: 8,
+            marginLeft: 10,
+            fontWeight: "600",
+        },
+        offchainLabel:{
+            color: "#FF0000",
+            marginTop: 8,
+            marginLeft: 10,
+            fontWeight: "600",
         }
     }
 );

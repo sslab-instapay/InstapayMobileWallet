@@ -8,6 +8,7 @@ export default class Channel extends React.Component {
     }
 
     render() {
+        const channelList = this.props.inChannelList.concat(this.props.outChannelList);
         return (
             <View>
                 <View style={styles.channelHeader}>
@@ -19,7 +20,7 @@ export default class Channel extends React.Component {
                             <Text style={{ fontSize: 13, color: "#007bff" }}>Open</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.openCloseButton} onPress={() => this.props.navigation.navigate('CloseChannelModal', {
-                            otherParam: '',
+                            channelList: channelList,
                         })}>
                             <Text style={{ fontSize: 13, color: "#007bff", marginRight: 7}}>Close</Text>
                         </TouchableOpacity>
@@ -60,7 +61,7 @@ export default class Channel extends React.Component {
         return (
             <View style={styles.channelListHeader}>
                 <Text style={styles.leftItem}>Address</Text>
-                <Text style={styles.textStyle}>Deposit</Text>
+                <Text style={{fontWeight: "600"}}>Deposit</Text>
                 <Text style={styles.rightItem}>Balance</Text>
             </View>
         );
@@ -96,10 +97,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     leftItem: {
-        marginLeft: 10
+        marginLeft: 10,
+        fontWeight: "600"
     },
     rightItem: {
-        marginRight: 10
+        marginRight: 10,
+        fontWeight: "600"
     },
     channelHeader:{
         flexDirection: "row",

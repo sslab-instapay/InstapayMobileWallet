@@ -51,6 +51,8 @@ class HomeScreen extends React.Component{
         this.state = {
             address: "0xqwei2q4jwqitw",
             balance: 10,
+            offchainDeposit: 0,
+            offchainBalance: 0,
             inChannelList: inChannelList,
             outChannelList: outChannelList,
         };
@@ -59,7 +61,7 @@ class HomeScreen extends React.Component{
     render() {
         return (
             <View style={styles.container}>
-                <Wallet address={this.state.address} balance={this.state.balance}/>
+                <Wallet address={this.state.address} balance={this.state.balance} offchainDeposit={this.state.offchainDeposit} offchainBalance={this.state.offchainBalance}/>
                 <Channel navigation={this.props.navigation} inChannelList={this.state.inChannelList} outChannelList={this.state.outChannelList}/>
             </View>
         );
@@ -81,6 +83,8 @@ class HomeScreen extends React.Component{
                 this.setState({
                         address: data.account.address,
                         balance: data.account.balance,
+                        offchainBalance: data.account.offchainBalance,
+                        offchainDeposit: data.account.offchainDeposit,
                         inChannelList: tempInChannelList.concat(...data.inChannelList),
                         outChannelList: tempOutChannelList.concat(...data.outChannelList),
                     }
