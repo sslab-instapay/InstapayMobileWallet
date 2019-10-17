@@ -11,7 +11,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import OpenChannelModal, {OpenChannelCameraModal} from "./component/OpenChannelModal";
 import CloseChannelModal from "./component/CloseChannelModal";
 
-const inChannelList = [];
+const inChannelList = [{"channelId" : 1, "channelType" : "IN", "channelStatus": "OPEN", "myAddress": "0xqwerqwerqwerqwr22k1k3", "otherAddress": "0xqijweir2j23jr23irnjs" , "myDeposit": 10, "otherDeposit": 0, "myBalance": 10}];
 const outChannelList = [];
 
 class HomeScreen extends React.Component{

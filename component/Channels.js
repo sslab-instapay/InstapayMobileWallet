@@ -9,6 +9,7 @@ export default class Channel extends React.Component {
 
     render() {
         const channelList = this.props.inChannelList.concat(this.props.outChannelList);
+        console.log(channelList);
         return (
             <View>
                 <View style={styles.channelHeader}>

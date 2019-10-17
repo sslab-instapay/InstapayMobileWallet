@@ -19,7 +19,6 @@ class CloseChannelModal extends React.Component {
 
     render() {
         const {params} = this.props.navigation.state;
-        const address = params ? params.address : null;
         const channelList = params ? params.channelList : null;
 
         const channelItemList = this.makeChannelItem(channelList);
@@ -45,12 +44,13 @@ class CloseChannelModal extends React.Component {
     }
 
     makeChannelItem(channelList){
-        var channelItemList = {};
+        var channelItemList = new Map();
         channelList.forEach(function (item, index) {
-            channelList[item.channelId] = 'Channel ' + item.channelId + ' ' + item.otherAddress + ' ' + item.myBalance;
+            channelItemList[item.channelId] = 'Channel ' + item.channelId + ' ' + item.channelType + ' ' + convertAddress(item.otherAddress) + ' ' + item.myBalance;
         });
         return channelItemList;
     }
+
 
     handleCloseChannel = () => {
         const url = "http://141.223.121.139:3001" + '/channels/requests/close';
@@ -80,9 +80,11 @@ class CloseChannelModal extends React.Component {
     };
 
     handleFail = () => {
-        console.log('OK Pressed');
         this.props.navigation.replace('Home');
     }
+}
+function convertAddress(address) {
+    return address.substring(0, 8) + "..."
 }
 
 const styles = StyleSheet.create({
